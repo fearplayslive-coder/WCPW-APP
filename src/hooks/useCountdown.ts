@@ -11,7 +11,6 @@ type CountdownResult = {
 function calculate(targetDate: Date): CountdownResult {
   const now = new Date().getTime();
   const target = targetDate.getTime();
-
   const diff = target - now;
 
   if (diff <= 0) {
@@ -29,7 +28,13 @@ function calculate(targetDate: Date): CountdownResult {
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  return { days, hours, minutes, seconds, isFinished: false };
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    isFinished: false,
+  };
 }
 
 export default function useCountdown(targetDate: Date) {
@@ -38,11 +43,11 @@ export default function useCountdown(targetDate: Date) {
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = window.setInterval(() => {
       setTime(calculate(targetDate));
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => window.clearInterval(interval);
   }, [targetDate]);
 
   return time;
